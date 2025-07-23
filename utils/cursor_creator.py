@@ -6,7 +6,5 @@ def create_cursor():
 
     cursor = conn.cursor()
 
-    conn.close()
-
     return cursor
 
