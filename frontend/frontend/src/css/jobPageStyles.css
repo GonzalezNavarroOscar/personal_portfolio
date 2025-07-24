@@ -1,0 +1,20 @@
+* {
+    box-sizing: border-box;
+}
+
+body{
+    margin: 0;
+}
+
+.jobs-page{
+    margin: 0 1rem;
+    padding: 0 1rem;
+}
+
+.jobs-title{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.job-list{
+    display: flex;
+}

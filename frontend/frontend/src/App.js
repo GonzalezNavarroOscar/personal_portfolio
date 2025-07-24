@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import JobsPage from './pages/jobPage.js'
+import Navbar from './components/Navbar.js';
+import Footer from './components/Footer.js';
+import { Box } from '@mui/material';
 
 const theme = createTheme({
   palette: {
@@ -17,21 +20,22 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
-        <div className="app-container">
-          
-          <main className="main-content">
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+      }}>
+        <Navbar />
+        <Router>
+          <Box component="main" sx={{ flexGrow: 1 }}>
             <Routes>
-
-              <Route path="/" element={<JobsPage /> }/>
-
-              <Route path="/jobs" element={<JobsPage />} />
-
-              <Route path="*"/>
+              <Route path="/" element={<JobsPage />} />
+              <Route path="*" />
             </Routes>
-          </main>
-        </div>
-      </Router>
+          </Box>
+        </Router>
+        <Footer />
+      </Box>
     </ThemeProvider>
   );
 }

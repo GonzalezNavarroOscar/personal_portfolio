@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchJobs } from '../api/jobsApi';
 import JobCard from '../components/jobCard.js';
+import '../css/jobPageStyles.css'
+
 
 const JobsPage = () => {
   const [jobs, setJobs] = useState([]);
@@ -20,15 +22,16 @@ const JobsPage = () => {
     loadData();
   }, []);
 
-  return (
+  return (    
     <div className="jobs-page">
-      <h1>Job Listings</h1>
+
+      <h1 className='jobs-title'>Job Listings</h1>
       {loading ? (
         <p>Loading...</p>
       ) : (
         <div className="job-list">
           {jobs.map(job => (
-            <JobCard key={job.id} job={job} />
+            <JobCard key={job.id} job={job} className='job-card'/>
           ))}
         </div>
       )}
