@@ -1,5 +1,8 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, current_app, jsonify, request
 from utils import cursor_creator as cc
+from utils import json_maker as jm
+import jwt
+from datetime import datetime,timedelta
 
 api_blueprint = Blueprint('api', __name__)
 
@@ -10,11 +13,61 @@ def get_jobs():
 
     cursor.execute("SELECT * FROM jobs")
 
-    columns = [column[0] for column in cursor.description]
-
-    jobs = []
-
-    for row in cursor.fetchall():
-        jobs.append(dict(zip(columns,row)))
+    jobs = jm.create_json_cursor(cursor)
 
     return jsonify(jobs)
+
+@api_blueprint.route("/users", methods = ["GET"])
+def get_users():
+
+    cursor = cc.create_cursor()
+
+    cursor.execute("SELECT * FROM users")
+
+    users = jm.create_json_cursor(cursor)
+
+    return jsonify(users)
+
+@api_blueprint.route("/login", methods=["POST"])
+def user_login():
+
+    data = request.get_json()
+
+    username = data.get('username')
+
+    password = data.get('password')
+
+    cursor = cc.create_cursor()
+
+    cursor.execute("SELECT * FROM users WHERE username = ?",(username,))
+
+    users = jm.create_json_cursor(cursor)
+
+    if not users:
+        return jsonify({'error': 'Invalid credentials'}), 401
+    
+    user = users[0]
+    
+    if user['password'] != password:
+        return jsonify({'error': 'Invalid credentials'}), 401
+    
+    secret_key = current_app.config.get('SECRET_KEY')
+    if not secret_key:
+        raise ValueError("Missing JWT secret key configuration")
+        
+    token = jwt.encode({
+        'user_id': user['id'],
+        'exp': datetime.utcnow() + timedelta(hours=24)
+    }, secret_key, algorithm='HS256')
+
+    return jsonify({
+        'token': token,
+        'user': {
+            'id': user['id'],
+            'username': user['username'],
+            'email': user['email'],
+            'role': user['role']
+        }
+    })
+
+

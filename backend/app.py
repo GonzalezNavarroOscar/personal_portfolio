@@ -5,6 +5,9 @@ from api import api_blueprint
 from flask_cors import CORS
 
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = 'very-secret-string'
+
 CORS(app)
 
 app.register_blueprint(api_blueprint,url_prefix='/api')
