@@ -3,6 +3,7 @@ from utils import cursor_creator as cc
 from utils import json_maker as jm
 import jwt
 from datetime import datetime,timedelta
+from werkzeug.security import generate_password_hash,check_password_hash
 
 api_blueprint = Blueprint('api', __name__)
 
@@ -35,7 +36,7 @@ def user_login():
 
     username = data.get('username')
 
-    password = data.get('password')
+    plain_password = data.get('password')
 
     cursor = cc.create_cursor()
 
@@ -48,8 +49,8 @@ def user_login():
     
     user = users[0]
     
-    if user['password'] != password:
-        return jsonify({'error': 'Invalid credentials'}), 401
+    if not check_password_hash(user['password'], plain_password):
+        return jsonify({"error": "Invalid credentials"}), 401
     
     secret_key = current_app.config.get('SECRET_KEY')
     if not secret_key:
@@ -69,5 +70,23 @@ def user_login():
             'role': user['role']
         }
     })
+
+@api_blueprint.route("/register", methods=["POST"])
+def register():
+    data = request.get_json()
+    username = data.get('username')
+    email = data.get('email')
+    plain_password = data.get('password')
+
+    # Hash the password before storing
+    hashed_password = generate_password_hash(plain_password)
+
+    cursor = cc.create_cursor()
+    cursor.execute(
+        "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
+        (username, email, hashed_password)
+    )
+
+    return jsonify({"message": "User registered successfully!"}), 201
 
 
