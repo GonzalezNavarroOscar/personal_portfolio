@@ -63,6 +63,14 @@ const LoginPage = () => {
           >
             Sign In
           </Button>
+          <Button
+            variant="contained"
+            href='/register'
+            fullWidth
+            sx={{ mt: 3 }}
+          >
+            Register
+          </Button>
         </form>
       </Paper>
     </Box>

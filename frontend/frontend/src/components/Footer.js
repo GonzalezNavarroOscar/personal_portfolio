@@ -31,7 +31,7 @@ export default function Footer(){
 
                 <hr className='company-divider'></hr>
 
-                <p className='company-desc'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mollis sodales sem, non malesuada velit fringilla vitae. Aliquam erat volutpat. Etiam porttitor sem in turpis scelerisque tempus. Duis eget dui sed velit lobortis aliquet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce non nisl ante. Mauris mauris ligula, sodales nec molestie eget, vestibulum sit amet lectus. Sed scelerisque dolor lectus, nec vestibulum leo finibus at. </p>
+                <p className='company-desc'>Job Board Page is a leading online platform connecting employers with top talent across industries. Our mission is to streamline the hiring process by leveraging cutting-edge technology, data-driven insights, and a user-friendly interface—empowering businesses to find the right candidates and helping job seekers discover meaningful career opportunities. </p>
 
             </div>
 

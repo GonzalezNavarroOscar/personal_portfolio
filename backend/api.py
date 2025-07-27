@@ -16,6 +16,8 @@ def get_jobs():
 
     jobs = jm.create_json_cursor(cursor)
 
+    cursor.close()
+
     return jsonify(jobs)
 
 @api_blueprint.route("/users", methods = ["GET"])
@@ -26,6 +28,8 @@ def get_users():
     cursor.execute("SELECT * FROM users")
 
     users = jm.create_json_cursor(cursor)
+
+    cursor.close()
 
     return jsonify(users)
 
@@ -43,6 +47,8 @@ def user_login():
     cursor.execute("SELECT * FROM users WHERE username = ?",(username,))
 
     users = jm.create_json_cursor(cursor)
+
+    cursor.close()
 
     if not users:
         return jsonify({'error': 'Invalid credentials'}), 401
@@ -76,17 +82,28 @@ def register():
     data = request.get_json()
     username = data.get('username')
     email = data.get('email')
+    role = data.get('role')
     plain_password = data.get('password')
 
-    # Hash the password before storing
     hashed_password = generate_password_hash(plain_password)
 
     cursor = cc.create_cursor()
-    cursor.execute(
-        "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
-        (username, email, hashed_password)
-    )
 
-    return jsonify({"message": "User registered successfully!"}), 201
+    try:
+        cursor.execute(
+        "INSERT INTO users(username, email, role, password) VALUES (?, ?, ?, ?)",
+        (username, email, role, hashed_password)
+        )
+
+        cursor.connection.commit()
+
+        return jsonify({"message": "User registered successfully!"}), 201
+    
+    except Exception as e:
+        cursor.connection.rollback()
+        return jsonify({"error:":str(e)}),500
+    
+    finally:
+        cursor.close()
 
 

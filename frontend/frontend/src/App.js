@@ -10,6 +10,7 @@ import UsersPage from './pages/usersPage.js';
 import LoginPage from './pages/loginPage.js';
 import { AuthProvider } from './context/AuthContext.js';
 import ProtectedRoute from './components/ProtectedRoute.js';
+import RegisterPage from './pages/registerPage.js';
 
 const theme = createTheme({
   palette: {
@@ -53,6 +54,7 @@ function App() {
                   </ProtectedRoute>
                   }
                   />
+                <Route path='/register' element={ <RegisterPage/> }/>
               </Routes>
             </Box>
           </Router>

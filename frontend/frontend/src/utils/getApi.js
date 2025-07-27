@@ -29,6 +29,18 @@ export const loginApi = async (credentials) => {
   }
 };
 
+// Register method with user data
+export const registerApi = async (user_data) => {
+
+  try{
+    const response = await api.post('/register',user_data );
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+
+};
+
 // GET Method for any endpoint
 export const get = async (endpoint) => {
   try {

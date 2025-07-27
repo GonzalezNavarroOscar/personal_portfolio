@@ -7,10 +7,11 @@ export default function Navbar() {
 
   return (
     <nav className="nav">
+      
       <a href="/" className="site-title">Job Boarding Page</a>
       
       <ul>
-        {user && (
+        {user && user.role === 'employer' && (
           <>
             <p>
               <Typography 
@@ -28,22 +29,24 @@ export default function Navbar() {
             <li>
               <a href='/jobs'>Upload a Job</a>
             </li>
-            <li>
-              <a href='/users'>Profile</a>
-            </li>
-
 
           </>
         )}
 
-        <li>
-          {user ? (
-            <div className="auth-section">
+        { user && (
+          <>
+            <li>
+              <a href='/users'>Profile</a>
+            </li>
+          </>
+        )}
+
+        {user ? (
+            <li>
               <Button 
                 variant="text"
                 sx={{ 
                   color: 'white',
-                  marginTop: '.6rem',
                   '&:hover': {
                     backgroundColor: 'rgba(255, 255, 255, 0.1)'
                   }
@@ -52,7 +55,7 @@ export default function Navbar() {
               >
                 Logout
               </Button>
-            </div>
+            </li>
           ) : (
             <Button 
               variant="text"
@@ -66,8 +69,7 @@ export default function Navbar() {
             >
               Login
             </Button>
-          )}
-        </li>
+        )}
       </ul>
     </nav>
   );
