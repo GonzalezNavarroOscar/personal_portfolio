@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchJobs } from '../services/jobsService.js';
+import { fetchJobs } from '../hooks/jobsService.js';
 import JobCard from '../components/jobCard.js';
 import '../css/jobPageStyles.css'
 

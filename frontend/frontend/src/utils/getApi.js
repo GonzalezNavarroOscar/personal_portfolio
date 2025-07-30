@@ -51,3 +51,14 @@ export const get = async (endpoint) => {
     throw error;
   }
 };
+
+//POST Method for any endpoint with data
+export const post = async (endpoint,data) => {
+  try{
+    const response = await api.post(endpoint,data);
+    return response.data;
+  } catch (error) {
+    console.log(`Error posting to ${endpoint}:`,error);
+    throw error;
+  }
+};
