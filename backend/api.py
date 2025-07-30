@@ -20,6 +20,24 @@ def get_jobs():
 
     return jsonify(jobs)
 
+@api_blueprint.route("/job-seeker-jobs", methods = ["GET"])
+def get_job_seeker_jobs():
+
+    employer_id = request.args.get("employer_id", type=int)
+    
+    cursor = cc.create_cursor()
+
+    cursor.execute(
+        "SELECT * FROM jobs WHERE employer_id != ?",
+        (employer_id,)
+        )
+
+    jobs = jm.create_json_cursor(cursor)
+
+    cursor.close()
+
+    return jsonify(jobs)
+
 @api_blueprint.route("/users", methods = ["GET"])
 def get_users():
 
@@ -106,4 +124,30 @@ def register():
     finally:
         cursor.close()
 
+@api_blueprint.route("/post-job", methods=["POST"])
+def post_job():
+    data = request.get_json()
+    title = data.get('title')
+    description = data.get('description')
+    salary = data.get('salary')
+    employer_id = data.get('employerId')
+
+    cursor = cc.create_cursor()
+
+    try:
+        cursor.execute(
+            "INSERT INTO jobs(title, description, salary, employer_id) VALUES (?, ?, ?, ?)",
+            (title, description, salary, employer_id)
+        )
+
+        cursor.connection.commit()
+
+        return jsonify({"success":"true"}),201
+    
+    except Exception as e:
+        cursor.connection.rollback()
+        return jsonify({"error:":str(e)}), 500
+    
+    finally:
+        cursor.close()
 

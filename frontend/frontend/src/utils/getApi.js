@@ -42,9 +42,11 @@ export const registerApi = async (user_data) => {
 };
 
 // GET Method for any endpoint
-export const get = async (endpoint) => {
+export const get = async (endpoint, params = {}) => {
   try {
-    const response = await api.get(endpoint);
+    const response = await api.get(endpoint, {
+      params: params
+    });
     return response.data;
   } catch (error) {
     console.error(`Error fetching ${endpoint}:`, error);

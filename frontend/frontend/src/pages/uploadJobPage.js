@@ -12,7 +12,7 @@ const UploadJobPage = () => {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [salary, setSalary] = useState(0)
-    const [employerId] = useState(user?.id || 0);
+    const [employerId] = useState(user?.id || 0)
     const [error, setError] = useState(null)
     const navigate = useNavigate()
 
@@ -26,8 +26,6 @@ const UploadJobPage = () => {
             try{
 
                 const result = await postJob({title,description,salary,employerId});
-
-                console.log(result.body);
 
                 if(result.success){
                     navigate('/');

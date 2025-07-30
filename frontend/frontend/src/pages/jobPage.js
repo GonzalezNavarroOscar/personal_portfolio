@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { fetchJobs } from '../hooks/jobsService.js';
+import { useAuth } from '../context/AuthContext';
 import JobCard from '../components/jobCard.js';
 import '../css/jobPageStyles.css'
 
@@ -8,10 +9,14 @@ const JobsPage = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const {user} = useAuth();
+
+  const [employer_id] = useState(user?.id || 0);
+
   useEffect(() => {
     const loadData = async () => {
       try {
-        const data = await fetchJobs();
+        const data = await fetchJobs({ employer_id });
         setJobs(data);
       } catch (error) {
         console.error("Failed to fetch jobs:", error);
@@ -19,8 +24,11 @@ const JobsPage = () => {
         setLoading(false);
       }
     };
-    loadData();
-  }, []);
+    
+    if (employer_id) {
+      loadData();
+    }
+  }, [employer_id]);
 
   return (    
     <div className="jobs-page">
