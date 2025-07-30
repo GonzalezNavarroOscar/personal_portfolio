@@ -1,9 +1,11 @@
 import '../css/navbarStyles.css';
 import { useAuth } from '../context/AuthContext';
-import { Button, Typography } from '@mui/material';
+import { Button } from '@mui/material';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
+
+  console.log('Navbar user:', user);
 
   return (
     <nav className="nav">
@@ -13,21 +15,8 @@ export default function Navbar() {
       <ul>
         {user && user.role === 'employer' && (
           <>
-            <p>
-              <Typography 
-                component="span" 
-                sx={{ 
-                  color: 'white',
-                  marginRight: '1rem',
-                  display: 'inline-block'
-                }}
-              >
-              Hello, {user.username}
-              </Typography>
-            </p>
-
             <li>
-              <a href='/jobs'>Upload a Job</a>
+              <a href='/upload-job'>Upload a Job</a>
             </li>
 
           </>

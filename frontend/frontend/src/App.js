@@ -11,6 +11,7 @@ import LoginPage from './pages/loginPage.js';
 import { AuthProvider } from './context/AuthContext.js';
 import ProtectedRoute from './components/ProtectedRoute.js';
 import RegisterPage from './pages/registerPage.js';
+import UploadJobPage from './pages/uploadJobPage.js';
 
 const theme = createTheme({
   palette: {
@@ -48,6 +49,11 @@ function App() {
                   </ProtectedRoute>
                   }
                   />
+                <Route path='/upload-job' element={
+                  <ProtectedRoute>
+                    <UploadJobPage />
+                  </ProtectedRoute>
+                }/>
                 <Route path='/users' element={
                   <ProtectedRoute>
                     <UsersPage />
